@@ -9,6 +9,7 @@ from typing import List, TypedDict, Annotated
 from langgraph.constants import Send
 import operator
 from langchain_core.messages import SystemMessage, HumanMessage
+from langsmith import 
 
 # Load environment variables
 load_dotenv()
@@ -21,6 +22,7 @@ os.environ['LANGCHAIN_PROJECT_NAME'] = os.getenv('LANGCHAIN_PROJECT_NAME')
 llm = ChatGroq(model='llama3-70b-8192')
 
 # Define section structure
+@traceable
 class Section(BaseModel):
     section_name: str = Field(description="Section name")
     description: str = Field(description="Description of the section")
@@ -31,6 +33,7 @@ class Sections(BaseModel):
 structured_sections = llm.with_structured_output(Sections)
 
 # Define blog state
+@traceable
 class BlogState(TypedDict):
     topic: str
     outline: str
@@ -43,11 +46,13 @@ class BlogState(TypedDict):
     step: str
     final_blog: str
 
+@traceable
 class BlogStateSection(TypedDict):
     section: Section
     completed_sections: Annotated[list, operator.add]
 
 # Orchestrator node to generate an outline
+@traceable
 def generate_outline(state: BlogState):
     st.write("Generating an outline for the blog...")
     result = structured_sections.invoke([
@@ -57,6 +62,7 @@ def generate_outline(state: BlogState):
     return {'topic': state['topic'], 'outline': result.sections}
 
 # Worker node to write sections
+@traceable
 def write_section(state: BlogStateSection):
     st.write("Generating content for the section...")
     section_content = llm.invoke([
@@ -66,6 +72,7 @@ def write_section(state: BlogStateSection):
     return {"completed_section": [section_content.content]}
 
 # Review node to check the quality of sections
+@traceable
 def review_section(state: BlogState):
     st.write("Reviewing the section...")
     prompt = PromptTemplate.from_template(
@@ -83,6 +90,7 @@ def review_section(state: BlogState):
     return {"step": decision}
 
 # Revision node to improve content
+@traceable
 def revise_section(state: BlogState):
     st.write("Revising the section content...")
     if state['step'] == "revise_section_content":
@@ -93,6 +101,7 @@ def revise_section(state: BlogState):
         return {"completed_section": [revised_content.content]}
 
 # Assign writers dynamically to sections
+@traceable
 def assign_writers(state: BlogState):
     st.write("Assigning writers to sections...")
     return [Send('write_section', {'section': s}) for s in state['outline']]
@@ -102,12 +111,14 @@ def should_revise(state: BlogState):
     return state["step"]
 
 # SEO Optimization step
+@traceable
 def seo_optimization(state: BlogState):
     st.write("Performing SEO optimization...")
     result = llm.invoke(f"Optimize the blog for search ranking: {state['topic']}")
     return {'finalize_blog': result.content}
 
 # Final publishing step
+@traceable
 def publish_blog(state: BlogState):
     st.write("Finalizing and publishing the blog...")
     return {"final_blog": state['finalize_blog']}

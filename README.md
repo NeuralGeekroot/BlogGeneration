@@ -1,6 +1,4 @@
-# Blog Generation Automation with LangGraph
-This project automates blog generation using an LLM-powered workflow.
-
+---
 title: Blog Generation
 emoji: 🚀
 colorFrom: Green
@@ -11,6 +9,10 @@ app_file: app.py
 license: apache-2.0
 pinned: false
 short_description: Refined AiBlogGenerator
+---
+
+# Blog Generation Automation with LangGraph
+This project automates blog generation using an LLM-powered workflow.
 
 ## 🛠 Setup
 1. Clone repo
