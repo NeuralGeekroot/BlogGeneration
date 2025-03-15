@@ -1,11 +1,16 @@
 # Blog Generation Automation with LangGraph
 This project automates blog generation using an LLM-powered workflow.
 
-## 🚀 Features
-- Uses open-source models (Mistral-7B)
-- Integrates LangGraph for workflow automation
-- Debugging with LangSmith
-- FastAPI for API access
+title: Blog Generation
+emoji: 🚀
+colorFrom: Green
+colorTo: Blue
+sdk: streamlit
+sdk_version: 1.42.0
+app_file: app.py
+license: apache-2.0
+pinned: false
+short_description: Refined AiBlogGenerator
 
 ## 🛠 Setup
 1. Clone repo
