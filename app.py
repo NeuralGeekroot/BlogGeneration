@@ -15,6 +15,7 @@ load_dotenv()
 os.environ['GROQ_API_KEY'] = os.getenv('GROQ_API_KEY')
 os.environ['LANGCHAIN_API_KEY'] = os.getenv('LANGCHAIN_API_KEY')
 os.environ['LANGSMITH_TRACING_V2'] = 'true'
+os.environ['LANGCHAIN_PROJECT_NAME'] = os.getenv('LANGCHAIN_PROJECT_NAME')
 
 # Initialize LLM
 llm = ChatGroq(model='llama3-70b-8192')
