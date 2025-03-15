@@ -1,8 +1,8 @@
 ---
 title: Blog Generation
 emoji: 🚀
-colorFrom: Green
-colorTo: Blue
+colorFrom: green
+colorTo: blue
 sdk: streamlit
 sdk_version: 1.42.0
 app_file: app.py

@@ -9,7 +9,7 @@ from typing import List, TypedDict, Annotated
 from langgraph.constants import Send
 import operator
 from langchain_core.messages import SystemMessage, HumanMessage
-from langsmith import 
+from langsmith import traceable
 
 # Load environment variables
 load_dotenv()
@@ -22,7 +22,6 @@ os.environ['LANGCHAIN_PROJECT_NAME'] = os.getenv('LANGCHAIN_PROJECT_NAME')
 llm = ChatGroq(model='llama3-70b-8192')
 
 # Define section structure
-@traceable
 class Section(BaseModel):
     section_name: str = Field(description="Section name")
     description: str = Field(description="Description of the section")
@@ -33,7 +32,6 @@ class Sections(BaseModel):
 structured_sections = llm.with_structured_output(Sections)
 
 # Define blog state
-@traceable
 class BlogState(TypedDict):
     topic: str
     outline: str
@@ -46,7 +44,6 @@ class BlogState(TypedDict):
     step: str
     final_blog: str
 
-@traceable
 class BlogStateSection(TypedDict):
     section: Section
     completed_sections: Annotated[list, operator.add]
@@ -169,15 +166,17 @@ def main():
                 'send_seo_optimization': "",
                 'revise_section_content': [],
                 'finalize_blog': "",
-                'step': ""
+                'step': "",
+                'final_blog': ""
             }
             
             # Invoke workflow
-            result = workflow.invoke(initial_state)
-            
-            # Display final result
-            st.subheader("Final Blog Content")
-            st.write(result['final_blog'])
+            try:
+                result = workflow.invoke(initial_state)
+                st.subheader("Final Blog Content")
+                st.write(result['final_blog'])
+            except Exception as e:
+                st.error(f"An error occurred: {e}")
         else:
             st.error("Please enter a blog topic.")
 
