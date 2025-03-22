@@ -1,8 +1,9 @@
 langchain
 langgraph
-langchain-openai
 langsmith
 streamlit
-langgraph
 langchain_groq
 dotenv
+langchain_openai
+langchain_community
+faiss-cpu
