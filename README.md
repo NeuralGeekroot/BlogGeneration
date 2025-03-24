@@ -17,4 +17,3 @@ This project automates blog generation using an LLM-powered workflow.
 ## 🛠 Setup
 1. Clone repo
 2. Install dependencies: `pip install -r requirements.txt`
-# BlogGeneration
