@@ -21,7 +21,7 @@ os.environ['LANGCHAIN_PROJECT_NAME'] = os.getenv('LANGCHAIN_PROJECT_NAME')
 os.environ['OPENAI_API_KEY'] = os.getenv('OPENAI_API_KEY')
 
 # Initialize LLM
-llm = ChatGroq(model='gemma2-9b-it')
+llm = ChatGroq(model='gemma2-9b-it') 
 
 # Initialize OpenAI client for DALL·E
 client = OpenAI()
